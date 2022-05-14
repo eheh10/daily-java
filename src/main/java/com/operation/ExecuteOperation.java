@@ -22,11 +22,18 @@ public class ExecuteOperation implements Operation {
 
     @Override
     public void execute() {
-        Tag tag = Main.tags.get(tagNumber-1);
-        if(tag.isCreated()){
-            tag.execute();
-        }else{
-            tag.countExecuteFail();
+        if(tagNumber-1 < Main.tags.size()) {
+            Tag tag = Main.tags.get(tagNumber - 1);
+            if (tag.isCreated()) {
+                tag.execute();
+                return;
+            }
+        }
+
+        if (Main.failTask.containsKey(tagNumber)) {
+            Main.failTask.put(tagNumber, Main.failTask.get(tagNumber)+1);
+        }else {
+            Main.failTask.put(tagNumber, 1);
         }
     }
 }
