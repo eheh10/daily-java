@@ -6,7 +6,6 @@ enum Status {
 
 public class Tag {
     private final int number;
-    private int createFail = 0;
     private int executeFail = 0;
     private Status status = Status.READY;
 
@@ -28,5 +27,13 @@ public class Tag {
 
     public void countExecuteFail(){
         executeFail++;
+    }
+
+    public boolean isReady(){
+        return status==Status.READY;
+    }
+
+    public boolean isCreated(){
+        return status==Status.CREATED;
     }
 }
