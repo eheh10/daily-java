@@ -5,8 +5,8 @@ enum Status {
 }
 
 public class Tag {
-    private final int number;
-    private int executeFail = 0;
+    public final int number;
+    public int executeFail = 0;
     private Status status = Status.READY;
 
     public Tag(int number){
