@@ -22,7 +22,7 @@ public class ExecuteOperation implements Operation {
 
     @Override
     public void execute() {
-        Tag tag = Main.tags.get(tagNumber+1);
+        Tag tag = Main.tags.get(tagNumber-1);
         if(tag.isCreated()){
             tag.execute();
         }else{
