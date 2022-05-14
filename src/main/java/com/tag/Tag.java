@@ -21,10 +21,6 @@ public class Tag {
         status = Status.READY;
     }
 
-    public void countCreateFail(){
-        createFail++;
-    }
-
     public void countExecuteFail(){
         executeFail++;
     }
