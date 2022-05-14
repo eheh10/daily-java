@@ -4,10 +4,13 @@ import com.operation.CreateOperation;
 import com.operation.ExecuteOperation;
 import com.operation.Operation;
 import com.tag.Tag;
+import com.tag.TagComparator;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -41,5 +44,31 @@ public class Main {
 
             op.execute();
         }
+
+        Iterator<Tag> it = tags.iterator();
+
+        System.out.print("사용 가능한 TAG: ");
+        while(it.hasNext()){
+            Tag t = it.next();
+            if (t.isReady()){
+                System.out.print(t.number+" ");
+            }
+        }
+        System.out.println();
+
+        System.out.println("TASK 생성 실패: "+createFail);
+
+        Collections.sort(tags, new TagComparator());
+        it = tags.iterator();
+
+        System.out.print("TASK 수행 실패한 태그: ");
+        while(it.hasNext()){
+            Tag t = it.next();
+            if(t.executeFail == 0){
+                break;
+            }
+            System.out.print(t.number+"("+t.executeFail+") ");
+        }
+
     }
 }
