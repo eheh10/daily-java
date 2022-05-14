@@ -4,18 +4,16 @@ import com.operation.CreateOperation;
 import com.operation.ExecuteOperation;
 import com.operation.Operation;
 import com.tag.Tag;
-import com.tag.TagComparator;
+import com.tag.FailTaskComparator;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Main {
     public static final List<Tag> tags = new ArrayList<>();
+    public static Map<Integer,Integer> failTask = new HashMap<>();
     public static int createFail = 0;
 
     public static void main(String[] args) throws IOException {
@@ -58,16 +56,14 @@ public class Main {
 
         System.out.println("TASK 생성 실패: "+createFail);
 
-        Collections.sort(tags, new TagComparator());
-        it = tags.iterator();
+        List<Map.Entry<Integer, Integer>> failTasks = new ArrayList<>(failTask.entrySet());
+        Collections.sort(failTasks, new FailTaskComparator());
+        Iterator<Map.Entry<Integer, Integer>> failIt = failTasks.iterator();
 
         System.out.print("TASK 수행 실패한 태그: ");
-        while(it.hasNext()){
-            Tag t = it.next();
-            if(t.executeFail == 0){
-                break;
-            }
-            System.out.print(t.number+"("+t.executeFail+") ");
+        while(failIt.hasNext()){
+            Map.Entry t = failIt.next();
+            System.out.print(t.getKey()+"("+t.getValue()+") ");
         }
 
     }
