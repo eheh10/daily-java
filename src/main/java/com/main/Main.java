@@ -58,6 +58,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Queue<Tag> tags = new PriorityQueue();
         Queue<Tag> executableTags = new PriorityQueue();
+        Map<Tag,Object> executeFailTags = new HashMap<>();
 
         Tag.initTag(tags);
 
@@ -77,12 +78,12 @@ public class Main {
 
             Operation op = operationFactory.create(command);
 
-            op.execute(tags, executableTags);
+            op.execute(tags, executableTags, executeFailTags);
         }
 
         //3. 뷰 분리
         TagView.displayCreatableTags(tags);
         TagView.displayCreateFail();
-        TagView.displayExecuteFail(Tag.getExecuteFailTags());
+        TagView.displayExecuteFail(executeFailTags);
     }
 }
