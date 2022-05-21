@@ -1,70 +1,88 @@
 package com.main;
 
-import com.operation.CreateOperation;
-import com.operation.ExecuteOperation;
 import com.operation.Operation;
+import com.operation.OperationFactory;
 import com.tag.Tag;
-import com.tag.FailTaskComparator;
+import com.view.TagView;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Main {
-    public static final List<Tag> tags = new ArrayList<>();
-    public static Map<Integer,Integer> failTask = new HashMap<>();
-    public static int createFail = 0;
+    public static final String INPUT1 = "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "execute 2";
+    public static final  String INPUT2 = "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create";
+
+    public static final String INPUT3 = "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "execute 11\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "create\n" +
+            "execute 2\n" +
+            "create\n" +
+            "execute 2\n" +
+            "execute 11\n" +
+            "execute 2\n" +
+            "execute 5\n" +
+            "execute 5\n" +
+            "execute 2\n" +
+            "execute 5\n" +
+            "execute 5";
+
+    //1. 도메인 값 객체 (자료구조 연산 추상화)
+//    public static final List<Tag> tags = new ArrayList<>();
+
+    //2. 원시 데이터를 감싼 객체로 연산을 하게 만드는 것(Integer -> Tag)
+//    public static Map<Integer,Integer> failTask = new HashMap<>();
+//    public static int createFail = 0;
 
     public static void main(String[] args) throws IOException {
-        for(int i=1; i<=9; i++){
-            tags.add(new Tag(i));
+        Queue<Tag> tags = new PriorityQueue();
+        Queue<Tag> executableTags = new PriorityQueue();
+
+        Tag.initTag(tags);
+
+//        InputStream is = System.in;
+//        BufferedInputStream bis = new BufferedInputStream(is,100);
+//        InputStreamReader isr = new InputStreamReader(bis, StandardCharsets.UTF_8);
+//        BufferedReader br = new BufferedReader(isr,100);
+////
+////        int n = Integer.parseInt(br.readLine());
+//        while( n < 5 || n > 50 ){
+//            System.out.println("N은 5 ≤ N ≤ 50");
+//            n = Integer.parseInt(br.readLine());
+//        }
+
+        OperationFactory operationFactory = new OperationFactory();
+        for(String command:INPUT1.split("\n")){
+
+            Operation op = operationFactory.create(command);
+
+            op.execute(tags, executableTags);
         }
 
-        InputStream is = System.in;
-        BufferedInputStream bis = new BufferedInputStream(is,100);
-        InputStreamReader isr = new InputStreamReader(bis, StandardCharsets.UTF_8);
-        BufferedReader br = new BufferedReader(isr,100);
-
-        int n = Integer.parseInt(br.readLine());
-        while( n < 5 || n > 50 ){
-            System.out.println("N은 5 ≤ N ≤ 50");
-            n = Integer.parseInt(br.readLine());
-        }
-
-        for(int i=0; i < n ; i++){
-            String command = br.readLine();
-
-            Operation op = Stream.of(new CreateOperation(), new ExecuteOperation())
-                    .filter(o->o.isSupport(command))
-                    .findFirst()
-                    .orElseThrow();
-
-            op.execute();
-        }
-
-        Iterator<Tag> it = tags.iterator();
-
-        System.out.print("사용 가능한 TAG: ");
-        while(it.hasNext()){
-            Tag t = it.next();
-            if (t.isReady()){
-                System.out.print(t.number+" ");
-            }
-        }
-        System.out.println();
-
-        System.out.println("TASK 생성 실패: "+createFail);
-
-        List<Map.Entry<Integer, Integer>> failTasks = new ArrayList<>(failTask.entrySet());
-        Collections.sort(failTasks, new FailTaskComparator());
-        Iterator<Map.Entry<Integer, Integer>> failIt = failTasks.iterator();
-
-        System.out.print("TASK 수행 실패한 태그: ");
-        while(failIt.hasNext()){
-            Map.Entry t = failIt.next();
-            System.out.print(t.getKey()+"("+t.getValue()+") ");
-        }
-
+        //3. 뷰 분리
+        TagView.displayCreatableTags(tags);
+        TagView.displayCreateFail();
+        TagView.displayExecuteFail(Tag.getExecuteFailTags());
     }
 }
