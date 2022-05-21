@@ -1,35 +1,55 @@
 package com.tag;
 
-enum Status {
-    READY, CREATED,
-}
+import java.util.Objects;
+import java.util.Queue;
 
-public class Tag {
-    public final int number;
-    public int executeFail = 0;
-    private Status status = Status.READY;
+//enum Status {
+//    READY, CREATED,
+//}
 
-    public Tag(int number){
+public class Tag implements Comparable<Tag>{
+    private final String number;
+//    public int executeFail = 0; //public 은 set도 가능 -> getter 제공
+//    private Status status = Status.READY; //사실상 setter, getter
+    private static int createFail;
+
+    public Tag(String number){
         this.number = number;
     }
 
-    public void create(){
-        status = Status.CREATED;
+    public String getNumber(){
+        return number;
     }
 
-    public void execute(){
-        status = Status.READY;
+    public static int getCreateFail(){
+        return createFail;
     }
 
-    public void countExecuteFail(){
-        executeFail++;
+    public static void createFailCount() {
+        createFail++;
     }
 
-    public boolean isReady(){
-        return status==Status.READY;
+    public static void initTag(Queue<Tag> tags){
+        for(int i=1; i<=9; i++){
+            tags.offer(new Tag(i+""));
+        }
     }
 
-    public boolean isCreated(){
-        return status==Status.CREATED;
+    @Override
+    public boolean equals(Object o) { //number가 같으면 같은 Tag
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
+        return Objects.equals(number, tag.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number);
+    }
+
+    @Override
+    public int compareTo(Tag o) {
+        return number.compareTo(o.number);
     }
 }
