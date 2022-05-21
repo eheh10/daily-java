@@ -1,9 +1,9 @@
 package com.operation;
 
-import com.main.Main;
 import com.tag.Tag;
 
-import java.util.Objects;
+import java.util.Map;
+import java.util.Queue;
 
 public class ExecuteOperation implements Operation {
     private Tag executeTag;
@@ -13,19 +13,16 @@ public class ExecuteOperation implements Operation {
     }
 
     @Override
-    public void execute() {
-        if(tagNumber-1 < Main.tags.size()) {
-            Tag tag = Main.tags.get(tagNumber - 1);
-            if (tag.isCreated()) {
-                tag.execute();
-                return;
-            }
+    public void execute(Queue<Tag> tags, Queue<Tag> executableTags, Map<Tag,Object> executeFailTags) {
+        boolean isExecuted = executableTags.remove(executeTag);
+
+        if(!isExecuted){
+            int cnt = (Integer)executeFailTags.getOrDefault(executeTag,0) + 1;
+
+            executeFailTags.put(executeTag,cnt);
+            return;
         }
 
-        if (Main.failTask.containsKey(tagNumber)) {
-            Main.failTask.put(tagNumber, Main.failTask.get(tagNumber)+1);
-        }else {
-            Main.failTask.put(tagNumber, 1);
-        }
+        tags.offer(executeTag);
     }
 }
