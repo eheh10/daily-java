@@ -1,6 +1,5 @@
 package com.operation;
 
 public interface Operation {
-    boolean isSupport(String cmd);
-    void execute();
+    void execute(Queue<Tag> tags, Queue<Tag> executableTags);
 }

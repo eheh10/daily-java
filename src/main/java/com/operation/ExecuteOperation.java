@@ -6,18 +6,10 @@ import com.tag.Tag;
 import java.util.Objects;
 
 public class ExecuteOperation implements Operation {
-    private int tagNumber;
+    private Tag executeTag;
 
-    @Override
-    public boolean isSupport(String cmd) {
-        String[] metas = cmd.split(" ");
-
-        if (Objects.equals(metas[0],"execute")) {
-            tagNumber = Integer.parseInt(metas[1]);
-            return true;
-        }
-
-        return false;
+    public ExecuteOperation(String number){
+        executeTag = new Tag(number);
     }
 
     @Override
