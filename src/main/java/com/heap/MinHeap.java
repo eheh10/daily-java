@@ -24,6 +24,8 @@ class Heap {
     }
 
     public int pop(){
+        int min = heaps.get(1);
+
         swap(1,heaps.size()-1,heaps);
         heaps.remove(heaps.size()-1);
 
@@ -43,7 +45,7 @@ class Heap {
             break;
         }
 
-        return heaps.get(1);
+        return min;
 
     }
 
@@ -64,12 +66,21 @@ public class MinHeap {
     public static void main(String[] args) {
         Heap minHeap = new Heap(new ArrayList<>(List.of(-1, 3, 10, 35, 23, 19, 47, 60, 35, 80, 44)));
 
+        System.out.println("==초기 상태==");
+        System.out.println(minHeap.toString());
+        System.out.println();
+
+        System.out.println("==5 추가==");
         minHeap.add(5);
         System.out.println(minHeap.toString());
+        System.out.println();
 
+        System.out.println("==1 추가==");
         minHeap.add(1);
         System.out.println(minHeap.toString());
+        System.out.println();
 
+        System.out.println("==최솟값 출력==");
         System.out.println(minHeap.pop());
         System.out.println(minHeap.toString());
 
