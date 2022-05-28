@@ -14,7 +14,7 @@ class Heap {
         heaps.add(num);
 
         for(int i=heaps.size()-1; i > 0; i/=2){
-            if(heaps.get(i) < heaps.get(i/2)){
+            if(i/2 > 0 && heaps.get(i) < heaps.get(i/2)){
                 swap(i,i/2,heaps);
                 continue;
             }
