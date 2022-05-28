@@ -31,7 +31,7 @@ class Heap {
         for(int i=1; i < heaps.size(); i=swapIdx){
             swapIdx = i*2;
 
-            if (swapIdx < heaps.size() && heaps.get(swapIdx) > heaps.get(swapIdx+1)){
+            if (swapIdx+1 < heaps.size() && heaps.get(swapIdx) > heaps.get(swapIdx+1)){
                 swapIdx += 1;
             }
 
@@ -52,12 +52,26 @@ class Heap {
         heaps.set(index1,heaps.get(index2));
         heaps.set(index2,tmp);
     }
+
+    @Override
+    public String toString() {
+        return heaps+"";
+
+    }
 }
 
 public class MinHeap {
     public static void main(String[] args) {
         Heap minHeap = new Heap(new ArrayList<>(List.of(-1, 3, 10, 35, 23, 19, 47, 60, 35, 80, 44)));
-//        minHeap.add(5);
+
+        minHeap.add(5);
+        System.out.println(minHeap.toString());
+
+        minHeap.add(1);
+        System.out.println(minHeap.toString());
+
         System.out.println(minHeap.pop());
+        System.out.println(minHeap.toString());
+
     }
 }
