@@ -1,4 +1,4 @@
-package com.tag;
+package com.v1.tag;
 
 import java.util.Comparator;
 import java.util.Map;

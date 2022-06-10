@@ -1,9 +1,9 @@
-package com.main;
+package com.v1.main;
 
-import com.operation.Operation;
-import com.operation.OperationFactory;
-import com.tag.Tag;
-import com.view.TagView;
+import com.v1.operation.Operation;
+import com.v1.operation.OperationFactory;
+import com.v1.tag.Tag;
+import com.v1.view.TagView;
 
 import java.io.IOException;
 import java.util.*;

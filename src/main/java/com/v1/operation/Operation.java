@@ -1,6 +1,6 @@
-package com.operation;
+package com.v1.operation;
 
-import com.tag.Tag;
+import com.v1.tag.Tag;
 
 import java.util.Map;
 import java.util.Queue;

@@ -1,7 +1,7 @@
-package com.view;
+package com.v1.view;
 
-import com.tag.TaskComparator;
-import com.tag.Tag;
+import com.v1.tag.TaskComparator;
+import com.v1.tag.Tag;
 
 import java.util.*;
 
