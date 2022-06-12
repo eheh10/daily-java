@@ -22,11 +22,14 @@ public class TagCountDisplay {
         List<Map.Entry<Tag, Integer>> list = new ArrayList(executeFail.entrySet());
         Collections.sort(list,new TagComparator());
 
+        StringBuilder output = new StringBuilder();
+
         for(int i=0; i<list.size(); i++){
             Map.Entry<Tag,Integer> m = list.get(i);
-            System.out.print(m.getKey()+"("+m.getValue()+")"+" ");
+            output.append(m.getKey()).append("(").append(m.getValue()).append(")").append(" ");
         }
-        System.out.println();
+
+        System.out.println(output.toString());
 
     }
 }
