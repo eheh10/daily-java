@@ -11,8 +11,8 @@ public class Tags {
         this.tags = tags;
     }
 
-    public boolean isEmpty() {
-        return tags.isEmpty();
+    public boolean hasNext() {
+        return !tags.isEmpty();
     }
 
     public Tag poll() {
