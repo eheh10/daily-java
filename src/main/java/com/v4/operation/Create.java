@@ -14,7 +14,7 @@ public class Create implements Operation{
 
     @Override
     public void action(Tags tags, TagPool executableTags) {
-        if (!tags.isEmpty()){
+        if (!tags.hasNext()){
             Tag t = tags.poll();
             executableTags.add(t);
             return;

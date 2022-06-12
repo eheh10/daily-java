@@ -11,7 +11,7 @@ public class TagsDisplay {
 
     public void display(){
         System.out.print("사용가능한 TAG: ");
-        while(!tags.isEmpty()){
+        while(!tags.hasNext()){
             System.out.print(tags.poll()+" ");
         }
         System.out.println();
