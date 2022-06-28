@@ -5,6 +5,31 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class Test6_V2 {
+
+    class IdPool {
+        private Set<String> ids = new HashSet<>();
+
+        public void add(String id) {
+            ids.add(id);
+        }
+
+        public void remove(String id) {
+            ids.remove(id);
+        }
+
+        public Set<String> getIds(){
+            return ids;
+        }
+    }
+
+    class IdComparator implements Comparator<String>{
+
+        @Override
+        public int compare(String o1, String o2) {
+            return o1.compareTo(o2);
+        }
+    }
+
     class Ticket{
         private int totalTicket;
         
@@ -62,7 +87,7 @@ public class Test6_V2 {
     }
 
     interface Action{
-        boolean execute(Ticket ticket, Ticketing ticketing, Set<String> ids);
+        boolean execute(Ticket ticket, Ticketing ticketing, IdPool ids);
     }
 
     class Request implements Action{
@@ -72,7 +97,7 @@ public class Test6_V2 {
         }
 
         @Override
-        public boolean execute(Ticket ticket, Ticketing ticketing, Set<String> ids) {
+        public boolean execute(Ticket ticket, Ticketing ticketing, IdPool ids) {
             if(ticketing.getAccessTime().isBefore(lastAccessTime.plusMinutes(1))){
                 return false;
             }
@@ -86,7 +111,7 @@ public class Test6_V2 {
     class Leave implements Action{
 
         @Override
-        public boolean execute(Ticket ticket, Ticketing ticketing, Set<String> ids) {
+        public boolean execute(Ticket ticket, Ticketing ticketing, IdPool ids) {
             ids.remove(ticketing.getId());
             ticket.increase();
 
@@ -112,7 +137,7 @@ public class Test6_V2 {
     }
 
     public List<String> solution(int totalTicket, String[] logs) {
-        Set<String> ids = new HashSet<>();
+        IdPool ids = new IdPool();
         Ticket ticket = new Ticket(totalTicket);
         LocalTime lastAccessTime = LocalTime.of(8,59,00);
 
@@ -137,8 +162,9 @@ public class Test6_V2 {
             }
         }
 
-        List<String> answers = new ArrayList<>(ids);
-        Collections.sort(answers);
+        List<String> answers = new ArrayList<>(ids.getIds());
+        Collections.sort(answers, new IdComparator());
+
         return answers;
     }
 
