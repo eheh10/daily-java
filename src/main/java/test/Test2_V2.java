@@ -1,32 +1,66 @@
 package test;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test2_V2 {
 
-    class Area{
-        private final int x1;
-        private final int y1;
-        private final int x2;
-        private final int y2;
+    static class Area{
+        private final int leftX;
+        private final int leftY;
+        private final int rightX;
+        private final int rightY;
 
-        public Area(int[] area) {
-            this.x1 = area[0];
-            this.y1 = area[1];
-            this.x2 = area[2];
-            this.y2 = area[3];
+        public Area(int[] area) { //유효성 체크 null, size
+            this.leftX = area[0];
+            this.leftY = area[1];
+            this.rightX = area[2];
+            this.rightY = area[3];
         }
 
-        public boolean isOverlap(Area other){
-            if (x1 >= other.x2){
+        public boolean isOverlap(Area other){ //유효성 검사
+            if (leftX >= other.rightX){
                 return false;
             }
 
-            if (y1 >= other.y2 || y2 <= other.y1){
+            if (leftY >= other.rightY || rightY <= other.leftY){
                 return false;
             }
 
             return true;
+        }
+    }
+
+    static class Areas{
+        private final List<Area> values;
+
+        public Areas(List<Area> values) { //리스트 자체 && 각 요소 null 확인, 깊은 복사
+            this.values = values;
+        }
+
+        public boolean containOverlapArea(Area area){
+            for(int i=0; i<values.size(); i++){
+                if (values.get(i).isOverlap(area)){
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public boolean doesNotContainOverlapArea(Area area){
+            return !containOverlapArea(area);
+        }
+
+        public static Areas from(int[][] areaValues){ //유효성
+            List<Area> values = new ArrayList<>();
+
+            for(int i=0; i < areaValues.length; i++){
+                values.add(new Area(areaValues[i]));
+            }
+
+            return new Areas(values);
         }
     }
     public static void main(String[] args) throws IOException {
@@ -56,23 +90,10 @@ public class Test2_V2 {
     public boolean solution(int[][] lands, int[][] wells, int[] point) {
         Area p = new Area(point);
 
-        for(int i=0; i<lands.length; i++){
-            Area l = new Area(lands[i]);
+        Areas landAreas = Areas.from(lands);
+        Areas wellAreas = Areas.from(wells);
 
-            if (p.isOverlap(l)){
-                return false;
-            }
-        }
-
-        for(int i=0; i<wells.length; i++){
-            Area w = new Area(wells[i]);
-
-            if (!p.isOverlap(w)){
-                return false;
-            }
-        }
-
-        return true;
+        return landAreas.doesNotContainOverlapArea(p) && wellAreas.containOverlapArea(p);
     }
 
 }
