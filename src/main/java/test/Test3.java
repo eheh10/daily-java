@@ -16,15 +16,17 @@ public class Test3 {
         StringBuilder answer = new StringBuilder();
 
         for(char c:word.toCharArray()){
-            if(Character.isAlphabetic(c)){
-                if(Character.isLowerCase(c)){
-                    answer.append((char)(122-c+97));
-                    continue;
-                }
-                answer.append((char)(90-c+65));
+            if(!Character.isAlphabetic(c)){
+                answer.append(c);
                 continue;
             }
-            answer.append(c);
+
+            if(Character.isLowerCase(c)) {
+                answer.append((char) (122 - c + 97));
+                continue;
+            }
+
+            answer.append((char)(90-c+65));
         }
 
         return answer.toString();
