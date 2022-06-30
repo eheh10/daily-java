@@ -17,13 +17,14 @@ public class Test1 {
     public static int[] solution(int money) {
         int[] coin = {50000,10000,5000,1000,500,100,50,10,1};
         int[] answers = new int[coin.length];
+        int tmp = money;
 
         for(int i=0; i<coin.length; i++){
-            int n = money/coin[i];
+            int n = tmp/coin[i];
 
             if(n > 0){
                 answers[i] = n;
-                money %= coin[i];
+                tmp %= coin[i];
                 continue;
             }
         }
