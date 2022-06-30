@@ -43,6 +43,22 @@ public class Test1_V2 {
         }
     }
 
+    class CoinPool{
+        private Set<Coin> coins;
+
+        public CoinPool(Set<Coin> coins) {
+            this.coins = coins;
+        }
+
+        public int size() {
+            return coins.size();
+        }
+
+        public Iterator<Coin> iterator() {
+            return coins.iterator();
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         InputStream is = System.in;
         BufferedInputStream bis = new BufferedInputStream(is,8192);
@@ -55,7 +71,7 @@ public class Test1_V2 {
     }
 
     private int[] solution(int money) {
-        Set<Coin> coins = getDefaultCoins();
+        CoinPool coins = new CoinPool(getDefaultCoins());
         Money tmp = new Money(money);
 
         int[] answers = new int[coins.size()];
@@ -85,7 +101,6 @@ public class Test1_V2 {
         coins.add(new Coin(100));
         coins.add(new Coin(50));
         coins.add(new Coin(10));
-        coins.add(new Coin(5));
         coins.add(new Coin(1));
 
         return coins;
