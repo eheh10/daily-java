@@ -28,32 +28,36 @@ public class Test2 {
     }
 
     public static boolean solution(int[][] lands, int[][] wells, int[] point) {
-        if (!isOverlap(lands,point) && isOverlap(wells,point)){
-            return true;
+        for(int i=0; i<lands.length; i++){
+            if (isOverlap(lands[i],point)){
+                return false;
+            }
         }
 
-        return false;
+        for(int i=0; i<wells.length; i++){
+            if (!isOverlap(wells[i],point)){
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    private static boolean isOverlap(int[][] area, int[] point){
+    private static boolean isOverlap(int[] area, int[] point){
         int x1 = 0;
         int y1 = 1;
         int x2 = 2;
         int y2 = 3;
 
-        for(int i=0; i<area.length; i++){
-            if (point[x1] >= area[i][x2]){
-                continue;
-            }
-
-            if (point[y1] >= area[i][y2] || point[y2] <= area[i][y1]){
-                continue;
-            }
-
-            return true;
+        if (point[x1] >= area[x2]){
+            return false;
         }
 
-        return false;
+        if (point[y1] >= area[y2] || point[y2] <= area[y1]){
+            return false;
+        }
+
+        return true;
     }
 
 }
