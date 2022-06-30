@@ -42,8 +42,7 @@ public class Test3_V2 {
             return c;
         }
 
-        @Override
-        public String toString() {
+        public String getValue() {
             StringBuilder str = new StringBuilder();
             for(char c:values){
                 str.append(c);
@@ -64,6 +63,6 @@ public class Test3_V2 {
         Word originalWord = Word.from(word);
         Word reverseWord = originalWord.reverseConverter();
 
-        return reverseWord.toString();
+        return reverseWord.getValue();
     }
 }
