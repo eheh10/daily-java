@@ -3,6 +3,32 @@ package test;
 import java.io.*;
 
 public class Test2_V2 {
+
+    class Area{
+        private final int x1;
+        private final int y1;
+        private final int x2;
+        private final int y2;
+
+        public Area(int[] area) {
+            this.x1 = area[0];
+            this.y1 = area[1];
+            this.x2 = area[2];
+            this.y2 = area[3];
+        }
+
+        public boolean isOverlap(Area other){
+            if (x1 >= other.x2){
+                return false;
+            }
+
+            if (y1 >= other.y2 || y2 <= other.y1){
+                return false;
+            }
+
+            return true;
+        }
+    }
     public static void main(String[] args) throws IOException {
         InputStream is = System.in;
         BufferedInputStream bis = new BufferedInputStream(is,8192);
@@ -24,36 +50,29 @@ public class Test2_V2 {
             point[i] = Integer.parseInt(input[i]);
         }
 
-        System.out.println(solution(lands,wells,point));
+        System.out.println(new Test2_V2().solution(lands,wells,point));
     }
 
-    public static boolean solution(int[][] lands, int[][] wells, int[] point) {
-        if (!isOverlap(lands,point) && isOverlap(wells,point)){
-            return true;
+    public boolean solution(int[][] lands, int[][] wells, int[] point) {
+        Area p = new Area(point);
+
+        for(int i=0; i<lands.length; i++){
+            Area l = new Area(lands[i]);
+
+            if (p.isOverlap(l)){
+                return false;
+            }
         }
 
-        return false;
-    }
+        for(int i=0; i<wells.length; i++){
+            Area w = new Area(wells[i]);
 
-    private static boolean isOverlap(int[][] area, int[] point){
-        int x1 = 0;
-        int y1 = 1;
-        int x2 = 2;
-        int y2 = 3;
-
-        for(int i=0; i<area.length; i++){
-            if (point[x1] >= area[i][x2]){
-                continue;
+            if (!p.isOverlap(w)){
+                return false;
             }
-
-            if (point[y1] >= area[i][y2] || point[y2] <= area[i][y1]){
-                continue;
-            }
-
-            return true;
         }
 
-        return false;
+        return true;
     }
 
 }
