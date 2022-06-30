@@ -1,23 +1,46 @@
 package test;
 
 import java.io.*;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Test1_V2 {
-    class CoinPool {
-        private final int[] coins;
+    class Coin implements Comparable<Coin>{
+        private final int coin;
 
-        public CoinPool(int[] coins){
-            this.coins = coins;
+        public Coin(int coin) {
+            this.coin = coin;
         }
 
-        public int get(int index){
-            return coins[index];
+        public int changeCoin(Money money){
+            return money.getMoney()/coin;
         }
 
-        public int getLength(){
-            return coins.length;
+        @Override
+        public int compareTo(Coin o) {
+            return o.coin - coin;
         }
 
+        public int getCoin() {
+            return coin;
+        }
+    }
+
+    class Money{
+        private final int money;
+
+        public Money(int money) {
+            this.money = money;
+        }
+
+        public int getMoney() {
+            return money;
+        }
+
+        public int change(Coin coin, int cnt){
+            return money - coin.getCoin() * cnt;
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -32,25 +55,42 @@ public class Test1_V2 {
     }
 
     private int[] solution(int money) {
-        CoinPool coin = new CoinPool(getDefaultCoin());
-        int[] answers = new int[coin.getLength()];
+        Set<Coin> coins = getDefaultCoins();
+        Money tmp = new Money(money);
 
-        for(int i=0; i<coin.getLength(); i++){
-            int n = money/coin.get(i);
+        int[] answers = new int[coins.size()];
+        int i = 0;
 
-            if(n > 0){
-                answers[i] = n;
-                money %= coin.get(i);
-                continue;
-            }
+        Iterator<Coin> it = coins.iterator();
+
+        while(it.hasNext()){
+            Coin coin = it.next();
+            int n = coin.changeCoin(tmp);
+
+            answers[i++] = n;
+            tmp = new Money(tmp.change(coin, n));
         }
 
         return answers;
     }
 
-    private static int[] getDefaultCoin(){
-        return new int[] {50000,10000,5000,1000,500,100,50,10,1};
+    private Set<Coin> getDefaultCoins(){
+        Set<Coin> coins = new TreeSet<>();
+
+        coins.add(new Coin(50000));
+        coins.add(new Coin(10000));
+        coins.add(new Coin(5000));
+        coins.add(new Coin(1000));
+        coins.add(new Coin(500));
+        coins.add(new Coin(100));
+        coins.add(new Coin(50));
+        coins.add(new Coin(10));
+        coins.add(new Coin(5));
+        coins.add(new Coin(1));
+
+        return coins;
     }
+
     private void displayResult(int[] solution) {
         StringBuilder result = new StringBuilder();
 
