@@ -47,7 +47,7 @@ public class Test5_V2 {
 
         for(int i=1; i<=number; i++){
             Group num = Group.from(i);
-            if (target.contains(num)){
+            if (num.contains(target)){
                 answer++;
                 continue;
             }
