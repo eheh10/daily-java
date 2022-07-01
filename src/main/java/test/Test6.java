@@ -2,10 +2,7 @@ package test;
 
 import java.io.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Test6 {
     public static void main(String[] args) throws IOException {
@@ -26,7 +23,7 @@ public class Test6 {
     }
 
     public static List<String> solution(int totalTicket, String[] logs) {
-        List<String> answers = new ArrayList<>();
+        Set<String> result = new HashSet<>();
         LocalTime endTime = LocalTime.of(9,59,59);
         LocalTime accessTime = LocalTime.of(8,59,00);
 
@@ -51,16 +48,17 @@ public class Test6 {
 
                 accessTime = time;
 
-                if(!answers.contains(id)){
-                    answers.add(id);
+                if(!result.contains(id)){
+                    result.add(id);
                     totalTicket--;
                 }
             }else if(Objects.equals(action,"leave")){
-                answers.remove(id);
+                result.remove(id);
                 totalTicket++;
             }
         }
 
+        List<String> answers = new ArrayList<>(result);
         Collections.sort(answers);
 
         return answers;
