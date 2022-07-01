@@ -3,6 +3,111 @@ package test;
 import java.io.*;
 
 public class Test4_V2 {
+
+    static class Page{
+        private final int value;
+
+        public Page(int value){
+            this.value = value;
+        }
+
+        public Page sumEachDigit(){
+            int sumValue = 0;
+            int remain = value;
+            for( ; remain > 0; remain/=10){
+                sumValue += remain%10;
+            }
+
+            return new Page(sumValue);
+        }
+
+        public Page multiplyEachDigit(){
+            int multiplyValue = 1;
+            int remain = value;
+            for( ; remain > 0; remain/=10){
+                multiplyValue *= remain%10;
+            }
+
+            return new Page(multiplyValue);
+        }
+
+        public int compare(Page page) {
+            if (this.equals(page)){
+                return 0;
+            }
+
+            if (value - page.value > 0){
+                return 1;
+            }
+
+            return -1;
+        }
+
+        public boolean isNotNextPage(Page page) {
+            return value - page.value != -1;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Page page = (Page) o;
+
+            return value == page.value;
+        }
+
+        @Override
+        public int hashCode() {
+            return value;
+        }
+    }
+
+    static class Book {
+        private final Page leftPage;
+        private final Page rightPage;
+
+        public Book(Page leftPage, Page rightPage) {
+            this.leftPage = leftPage;
+            this.rightPage = rightPage;
+        }
+
+        public static Book from(int left, int right){
+            return new Book(new Page(left), new Page(right));
+        }
+
+        public boolean isNotValid(){
+            if (leftPage.isNotNextPage(rightPage)){
+                return true;
+            }
+            return false;
+        }
+
+        private Page CalculateMaxPage(){
+            Page leftMax = leftPage.sumEachDigit();
+            Page rightMax = rightPage.sumEachDigit();
+
+            if (leftMax.compare(leftPage.multiplyEachDigit()) == -1){
+                leftMax = leftPage.multiplyEachDigit();
+            }
+            if (rightMax.compare(rightPage.multiplyEachDigit()) == -1){
+                rightMax = rightPage.multiplyEachDigit();
+            }
+
+            if(leftMax.compare(rightMax) == 1){
+                return leftMax;
+            }
+            return rightMax;
+        }
+
+        public int compare(Book book){
+            Page maxPage = CalculateMaxPage();
+            Page bookMaxPage = book.CalculateMaxPage();
+
+            return maxPage.compare(bookMaxPage);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         InputStream is = System.in;
         BufferedInputStream bis = new BufferedInputStream(is,8192);
@@ -26,44 +131,22 @@ public class Test4_V2 {
     }
 
     public static int solution(int[] pobi, int[] crong) {
-        if (pobi[0]+1 != pobi[1] || crong[0]+1 != crong[1]){
+        Book pobiBook = Book.from(pobi[0],pobi[1]);
+        Book crongBook = Book.from(crong[0],crong[1]);
+
+        if (pobiBook.isNotValid() || crongBook.isNotValid()){
             return -1;
         }
 
-        int pMax = maxNum(pobi);
-        int cMax = maxNum(crong);
-
-        if (pMax == cMax){
+        if (pobiBook.compare(crongBook) == 0){
             return 0;
-        }else if(pMax > cMax){
+        }
+
+        if (pobiBook.compare(crongBook) == 1){
             return 1;
         }
+
         return 2;
     }
 
-    private static int maxNum(int[] arr) {
-        int max = Integer.MIN_VALUE;
-
-        for(int i=0; i<2; i++){
-            int value = arr[i];
-            int sum = 0;
-            int mul = 1;
-
-            for(int n=10; value > 0 ; value /= n){
-                int num = value%n;
-                sum += num;
-                mul *= num;
-            }
-
-            if (max < sum){
-                max = sum;
-            }
-
-            if (max < mul){
-                max = mul;
-            }
-        }
-
-        return max;
-    }
 }
