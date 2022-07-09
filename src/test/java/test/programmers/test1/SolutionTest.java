@@ -18,47 +18,71 @@ class SolutionTest {
         List<Integer> scores = new ArrayList<>();
 
         int computeScore = 0;
+        StringBuilder setScore = new StringBuilder();
+
         for(int i=0; i<dartResult.length(); i++){
             char c = dartResult.charAt(i);
 
-            if (Character.isDigit(c)){
-                scores.add(computeScore);
+            if (!Character.isDigit(c)){
+                continue;
+            }
 
-                StringBuilder setScore = new StringBuilder();
+            setScore.append(c);
 
-                setScore.append(c);
+            if (Character.isDigit(dartResult.charAt(i+1))){
+                setScore.append(dartResult.charAt(i+1));
+                i++;
+            }
 
-                if (Character.isDigit(dartResult.charAt(i+1))){
-                    setScore.append(dartResult.charAt(i+1));
+            int d = 1;
+            for(int j=setScore.length()-1; j>=0; j--){
+                computeScore += (setScore.charAt(j) - '0')*d;
+                d*=10;
+            }
+
+            scores.add(computeScore);
+
+            setScore.setLength(0);
+            computeScore = 0;
+        }
+
+        int scoresIdx = -1;
+
+        for(int i=0; i<dartResult.length(); i++){
+            char c = dartResult.charAt(i);
+
+            if(Character.isDigit(c)){
+                scoresIdx++;
+                if(Character.isDigit(dartResult.charAt(i+1))){
                     i++;
                 }
-
-                computeScore = Integer.parseInt(setScore.toString());
-
                 continue;
             }
 
             if (Character.isUpperCase(c)){
-                int n = c=='D'? 2: c=='T'? 3: 1;
+                int n = 1;
 
-                computeScore = (int)Math.pow(computeScore,n);
+                if (c=='D'){
+                    n = 2;
+                }else if(c=='T'){
+                    n = 3;
+                }
+
+                scores.set(scoresIdx, (int)Math.pow(scores.get(scoresIdx),n));
                 continue;
             }
 
             if (c == '#'){
-                computeScore *= -1;
+                scores.set(scoresIdx, scores.get(scoresIdx)*-1);
                 continue;
             }
 
-            if (scores.size() > 1) {
-                scores.set(scores.size() - 1, scores.get(scores.size() - 1) * 2);
+            if (scoresIdx > 0) {
+                scores.set(scoresIdx-1, scores.get(scoresIdx-1)*2);
             }
 
-            computeScore *= 2;
-
+            scores.set(scoresIdx, scores.get(scoresIdx)*2);
         }
-
-        scores.add(computeScore);
 
         for(int score:scores){
             answer += score;
