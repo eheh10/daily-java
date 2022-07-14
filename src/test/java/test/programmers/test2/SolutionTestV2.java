@@ -1,6 +1,7 @@
 package test.programmers.test2;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
@@ -68,5 +69,23 @@ class SolutionTestV2 {
         int answer = basket - numberSet.size();
 
         assertThat(answer).isEqualTo(expectAnswer);
+    }
+
+    @Test
+    void test(){
+        //given
+        List<Integer> values = new ArrayList<>();
+        values.add(1);
+        values.add(2);
+        values.add(3);
+        NumberSet numberSet = new NumberSet(values);
+        List<Integer> expect = List.of(1,2);
+
+        //when
+        numberSet.add(3);
+        List<Integer> actual = numberSet.values;
+
+        //then
+        assertThat(actual).isEqualTo(expect);
     }
 }
