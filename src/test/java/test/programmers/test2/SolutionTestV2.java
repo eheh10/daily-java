@@ -11,16 +11,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SolutionTestV2 {
-    static class NumberSet{
+    static class Discontinuity {
         private final List<Integer> values;
 
-        public NumberSet(List<Integer> values) {
+        public Discontinuity(List<Integer> values) {
             this.values = values;
         }
 
-        public static NumberSet from(int size){
+        public static Discontinuity from(int size){
             List<Integer> values = new ArrayList<>(Math.max(10,size));
-            return new NumberSet(values);
+            return new Discontinuity(values);
         }
 
         public void add(int num){
@@ -51,13 +51,13 @@ class SolutionTestV2 {
     @ParameterizedTest
     @ArgumentsSource(SolutionTestSuiteArgumentsProvider.class)
     void testExample(int[][] board, int[] moves, int expectAnswer) {
-        NumberSet numberSet = NumberSet.from(board.length);
+        Discontinuity discontinuity = Discontinuity.from(board.length);
 
         int basket = 0;
         for(int num:moves){
             for(int i=0; i<board.length; i++){
                 if (board[i][num-1] != 0){
-                    numberSet.add(board[i][num-1]);
+                    discontinuity.add(board[i][num-1]);
 
                     board[i][num-1] = 0;
                     basket++;
@@ -66,7 +66,7 @@ class SolutionTestV2 {
             }
         }
 
-        int answer = basket - numberSet.size();
+        int answer = basket - discontinuity.size();
 
         assertThat(answer).isEqualTo(expectAnswer);
     }
@@ -78,12 +78,12 @@ class SolutionTestV2 {
         values.add(1);
         values.add(2);
         values.add(3);
-        NumberSet numberSet = new NumberSet(values);
+        Discontinuity discontinuity = new Discontinuity(values);
         List<Integer> expect = List.of(1,2);
 
         //when
-        numberSet.add(3);
-        List<Integer> actual = numberSet.values;
+        discontinuity.add(3);
+        List<Integer> actual = discontinuity.values;
 
         //then
         assertThat(actual).isEqualTo(expect);
