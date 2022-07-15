@@ -84,7 +84,7 @@ class SolutionTestV2 {
         }
 
         public LocalTime searchTobeInvolveTime(int maxSize) {
-            if(values.size() == 0 || values.size() <= maxSize){
+            if(values.size() > 0 && values.size() <= maxSize){
                 return values.get(0);
             }
 
