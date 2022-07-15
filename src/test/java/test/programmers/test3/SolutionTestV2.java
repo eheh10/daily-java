@@ -58,10 +58,11 @@ class SolutionTestV2 {
             int dIdx = 0;
 
             for(int order=0; order < num; order++) {
-                LocalTime currentTime = startTime.plusMinutes(order*interval);
                 List<LocalTime> currentValues = new ArrayList<>(Math.max(10,maxSize));
+                LocalTime currentTime = startTime.plusMinutes(order*interval);
+                currentValues.add(currentTime);
 
-                while(!times.isEmpty() && currentValues.size() < maxSize){
+                while(!times.isEmpty() && currentValues.size() <= maxSize){
                     if (times.peek().isAfter(currentTime)){
                         break;
                     }
@@ -73,17 +74,21 @@ class SolutionTestV2 {
 
             return distribution;
         }
+    }
 
-        public LocalTime[] getStartTimes() {
-            LocalTime[] startTimes = new LocalTime[num];
-            int sIdx = 0;
+    static class TimeSearch{
+        private final List<LocalTime> values;
 
-            for(int order=0; order < num; order++) {
-                LocalTime currentTime = startTime.plusMinutes(order*interval);
-                startTimes[sIdx++] = currentTime;
+        public TimeSearch(List<LocalTime> values) {
+            this.values = values;
+        }
+
+        public LocalTime searchTobeInvolveTime(int maxSize) {
+            if(values.size() == 0 || values.size() <= maxSize){
+                return values.get(0);
             }
 
-            return startTimes;
+            return values.get(values.size()-1).minusMinutes(1);
         }
     }
 
@@ -91,8 +96,6 @@ class SolutionTestV2 {
     @ParameterizedTest
     @ArgumentsSource(SolutionTestSuiteArgumentsProvider.class)
     void testExample(int n, int t, int m, String[] timetable, String expectAnswer) {
-        String answer = "";
-
         Times times = Times.createDefault();
 
         for(String time : timetable) {
@@ -107,16 +110,9 @@ class SolutionTestV2 {
         TimeDistribution timeDistribution = new TimeDistribution(n,t,m,departureTime);
 
         List<LocalTime> lastBus = timeDistribution.compute(times)[n-1];
-        LocalTime lastDepartureTime = timeDistribution.getStartTimes()[n-1];
 
-        LocalTime con = null;
-        if(lastBus.size() == 0 || lastBus.size() < m){
-            con = lastDepartureTime;
-        }else{
-            con = lastBus.get(lastBus.size()-1).minusMinutes(1);
-        }
-
-        answer = String.valueOf(con);
+        TimeSearch timeSearch = new TimeSearch(lastBus);
+        String answer = String.valueOf(timeSearch.searchTobeInvolveTime(m));
 
         assertThat(answer).isEqualTo(expectAnswer);
     }
