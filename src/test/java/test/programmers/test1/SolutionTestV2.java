@@ -158,8 +158,8 @@ class SolutionTestV2 {
             values.add(pointElement);
         }
 
-        public int compute() {
-            int result = 0;
+        public Score compute() {
+            Score result = Score.zero();
             List<Score> setScores = new ArrayList<>();
 
             for(int i=0; i < values.size(); i++) {
@@ -186,11 +186,12 @@ class SolutionTestV2 {
                 if(scores[0]!=null) {
                     setScores.set(i-1,scores[0]);
                 }
+
                 setScores.add(scores[1]);
             }
 
             for(Score s:setScores){
-                result += s.value;
+                result = result.sum(s);
             }
 
             return result;
@@ -272,7 +273,7 @@ class SolutionTestV2 {
             point.add(pointElement);
         }
 
-        answer = point.compute();
+        answer = point.compute().value;
 
         assertThat(answer).isEqualTo(expectAnswer);
     }
