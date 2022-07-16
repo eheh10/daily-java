@@ -172,7 +172,7 @@ class SolutionTestV2 {
                 Score bonusScore = bonus.computeScore(score);
 
                 if(option.isEmpty()){
-                    setScores.add(new Score(bonusScore.value));
+                    setScores.add(bonusScore);
                     continue;
                 }
 
