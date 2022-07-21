@@ -16,6 +16,10 @@ class SolutionTestV2 {
         private final String value;
 
         public City(String value) {
+            if (Objects.equals(value,null) ){
+                value = "";
+            }
+
             this.value = value.toUpperCase();
         }
 
@@ -35,10 +39,25 @@ class SolutionTestV2 {
         }
     }
 
+    static class WorkTime{
+        private final int value;
+
+        public WorkTime(int value) {
+            if (Objects.equals(value,null) || value < 0){
+                value = 0;
+            }
+            this.value = value;
+        }
+
+        public WorkTime sum(WorkTime workTime) {
+            return new WorkTime(value + workTime.value);
+        }
+    }
+
     static class Cache{
         private final List<City> values;
         private final int size;
-        private int workTime = 0;
+        private WorkTime workTime = new WorkTime(0);
 
         public Cache(List<City> values, int size) {
             this.values = values;
@@ -58,8 +77,8 @@ class SolutionTestV2 {
             return values.contains(city);
         }
 
-        public void workAsMuch(int workTime){
-            this.workTime += workTime;
+        public void workAsMuch(WorkTime workTime){
+            this.workTime = this.workTime.sum(workTime);
         }
 
         public void removeLSU(){
@@ -92,7 +111,7 @@ class SolutionTestV2 {
     }
 
     interface Handling{
-        int WORKTIME = 1;
+        WorkTime WORKTIME = new WorkTime(1);
         void execute(City city);
     }
 
@@ -113,7 +132,7 @@ class SolutionTestV2 {
 
     static class Miss implements Handling{
         private final Cache cache;
-        private static final int WORKTIME = 5;
+        private static final WorkTime WORKTIME = new WorkTime(5);
 
         public Miss(Cache cache) {
             this.cache = cache;
