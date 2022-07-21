@@ -24,6 +24,9 @@ class SolutionTestV2 {
         }
 
         public static City ignoreCase(String value){
+            if (Objects.equals(value,null) ){
+                value = "";
+            }
             return new City(value.toUpperCase());
         }
 
@@ -64,6 +67,14 @@ class SolutionTestV2 {
         private WorkTime workTime = new WorkTime(0);
 
         public Cache(List<City> values, int size) {
+            if (Objects.equals(size,null) || size < 0){
+                size = 0;
+            }
+
+            if (Objects.equals(values,null)){
+                values = new ArrayList<>(Math.max(10,size));
+            }
+
             this.values = values;
             this.size = size;
         }
@@ -77,7 +88,7 @@ class SolutionTestV2 {
             return values.size() == size;
         }
 
-        public boolean contains(City city){
+        public boolean isHit(City city){
             return values.contains(city);
         }
 
@@ -106,7 +117,7 @@ class SolutionTestV2 {
         }
 
         public Handling of(City city){
-            if (cache.contains(city)){
+            if (cache.isHit(city)){
                 return new Hit(cache);
             }
 
