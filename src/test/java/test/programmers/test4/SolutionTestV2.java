@@ -100,7 +100,7 @@ class SolutionTestV2 {
             values.remove(values.size()-1);
         }
 
-        public void load(City city) {
+        public void write(City city) {
             values.add(0,city);
         }
 
@@ -139,7 +139,7 @@ class SolutionTestV2 {
 
         public void execute(City city){
             cache.remove(city);
-            cache.load(city);
+            cache.write(city);
             cache.workAsMuch(WORKTIME);
         }
 
@@ -157,7 +157,7 @@ class SolutionTestV2 {
             if (cache.isFull()){
                 cache.removeLSU();
             }
-            cache.load(city);
+            cache.write(city);
             cache.workAsMuch(WORKTIME);
         }
     }
