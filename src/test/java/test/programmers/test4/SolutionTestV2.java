@@ -20,7 +20,11 @@ class SolutionTestV2 {
                 value = "";
             }
 
-            this.value = value.toUpperCase();
+            this.value = value;
+        }
+
+        public static City ignoreCase(String value){
+            return new City(value.toUpperCase());
         }
 
         @Override
