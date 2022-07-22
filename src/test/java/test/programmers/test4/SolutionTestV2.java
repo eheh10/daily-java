@@ -122,6 +122,11 @@ class SolutionTestV2 {
                 throw new RuntimeException();
             }
 
+            if (size==0){
+                workTime.sum(WorkTime.miss());
+                return;
+            }
+
             if (values.contains(city)){
                 hitRelocation(city);
                 workTime.sum(WorkTime.hit());
