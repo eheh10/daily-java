@@ -16,24 +16,27 @@ class SolutionTestV2 {
         private final String value;
 
         public City(String value) {
-            if (Objects.equals(value,null) ){
-                value = "";
+            if (Objects.isNull(value) ){
+                throw new RuntimeException("city가 null이 될 수 없음");
+            }
+
+            if (value.isEmpty() || value.isBlank() ){
+                throw new RuntimeException("city가 빈 값이 될 수 없음");
             }
 
             this.value = value;
         }
 
         public static City ignoreCase(String value){
-            if (Objects.equals(value,null) ){
-                value = "";
-            }
-            return new City(value.toUpperCase());
+            value = Optional.ofNullable(value).map(v->v.toUpperCase()).orElse(null);
+
+            return new City(value);
         }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (getClass() != o.getClass()) return false;
 
             City city = (City) o;
 
@@ -42,7 +45,7 @@ class SolutionTestV2 {
 
         @Override
         public int hashCode() {
-            return value != null ? value.hashCode() : 0;
+            return value.hashCode();
         }
     }
 
