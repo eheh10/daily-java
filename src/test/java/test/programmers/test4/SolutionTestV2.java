@@ -52,6 +52,9 @@ class SolutionTestV2 {
 
     static class WorkTime{
         private final int value;
+        private static final WorkTime ZERO = new WorkTime(0);
+        private static final WorkTime HIT = new WorkTime(1);
+        private static final WorkTime MISS = new WorkTime(5);
 
         public WorkTime(int value) {
             if (value < 0) {
@@ -67,6 +70,19 @@ class SolutionTestV2 {
 
             return new WorkTime(value + workTime.value);
         }
+
+        public static WorkTime zero() {
+            return ZERO;
+        }
+
+        public static WorkTime hit() {
+            return HIT;
+        }
+
+        public static WorkTime miss() {
+            return MISS;
+        }
+
     }
 
     static class Cache{
