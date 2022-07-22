@@ -16,7 +16,7 @@ class SolutionTestV2 {
     static class City{
         private final String value;
 
-        public City(String value) {
+        private City(String value) {
             if (Objects.isNull(value) ){
                 throw new RuntimeException("city가 null이 될 수 없음");
             }
