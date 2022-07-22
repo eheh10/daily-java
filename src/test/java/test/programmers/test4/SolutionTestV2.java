@@ -71,12 +71,22 @@ class SolutionTestV2 {
         private WorkTime workTime = new WorkTime(0);
 
         public Cache(List<City> values, int size) {
-            if (Objects.equals(size,null) || size < 0){
-                size = 0;
+            if(Objects.isNull(values)){
+                throw new RuntimeException();
             }
 
-            if (Objects.equals(values,null)){
-                values = new ArrayList<>(Math.max(10,size));
+            if(Objects.isNull(size)){
+                throw new RuntimeException();
+            }
+
+            if (size < 0){
+                throw new RuntimeException("size는 0이상");
+            }
+
+            for(int i=0; i<values.size(); i++){
+                if (Objects.isNull(values.get(i))){
+                    throw new RuntimeException("null 을 포함할 수 없음");
+                }
             }
 
             this.values = values;
