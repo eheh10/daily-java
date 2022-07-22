@@ -54,13 +54,17 @@ class SolutionTestV2 {
         private final int value;
 
         public WorkTime(int value) {
-            if (Objects.equals(value,null) || value < 0){
-                value = 0;
+            if (value < 0) {
+                throw new RuntimeException("value는 0이상");
             }
             this.value = value;
         }
 
         public WorkTime sum(WorkTime workTime) {
+            if (Objects.isNull(workTime)){
+                throw new RuntimeException();
+            }
+
             return new WorkTime(value + workTime.value);
         }
     }
