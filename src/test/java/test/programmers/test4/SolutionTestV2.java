@@ -115,10 +115,16 @@ class SolutionTestV2 {
         }
 
         public void write(City city) {
+            if (Objects.isNull(city)){
+                throw new RuntimeException();
+            }
             values.add(0,city);
         }
 
         public void remove(City city) {
+            if (Objects.isNull(city)){
+                throw new RuntimeException();
+            }
             values.remove(city);
         }
     }
