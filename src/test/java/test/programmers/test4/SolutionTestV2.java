@@ -88,7 +88,6 @@ class SolutionTestV2 {
     static class Cache{
         private final List<City> values;
         private final int size;
-        private WorkTime workTime = new WorkTime(0);
 
         public Cache(List<City> values, int size) {
             if(Objects.isNull(values)){
@@ -118,87 +117,31 @@ class SolutionTestV2 {
             return new Cache(values,size);
         }
 
-        public boolean isFull(){
-            return values.size() == size;
-        }
-
-        public boolean isHit(City city){
-            return values.contains(city);
-        }
-
-        public void workAsMuch(WorkTime workTime){
-            this.workTime = this.workTime.sum(workTime);
-        }
-
-        public void removeLSU(){
-            values.remove(values.size()-1);
-        }
-
-        public void write(City city) {
+        public void access(City city, WorkTime workTime){
             if (Objects.isNull(city)){
                 throw new RuntimeException();
             }
+
+            if (values.contains(city)){
+                hitRelocation(city);
+                workTime.sum(WorkTime.hit());
+                return;
+            }
+
+            missRelocation(city);
+            workTime.sum(WorkTime.miss());
+        }
+
+        private void hitRelocation(City city){
+            values.remove(city);
             values.add(0,city);
         }
 
-        public void remove(City city) {
-            if (Objects.isNull(city)){
-                throw new RuntimeException();
+        private void missRelocation(City city){
+            if (values.size() == size){
+                values.remove(values.size()-1);
             }
-            values.remove(city);
-        }
-    }
-
-    static class CacheFactory{
-        private final Cache cache;
-
-        public CacheFactory(Cache cache) {
-            this.cache = cache;
-        }
-
-        public Handling of(City city){
-            if (cache.isHit(city)){
-                return new Hit(cache);
-            }
-
-            return new Miss(cache);
-        }
-    }
-
-    interface Handling{
-        WorkTime WORKTIME = new WorkTime(1);
-        void execute(City city);
-    }
-
-    static class Hit implements Handling{
-        private final Cache cache;
-
-        public Hit(Cache cache) {
-            this.cache = cache;
-        }
-
-        public void execute(City city){
-            cache.remove(city);
-            cache.write(city);
-            cache.workAsMuch(WORKTIME);
-        }
-
-    }
-
-    static class Miss implements Handling{
-        private final Cache cache;
-        private static final WorkTime WORKTIME = new WorkTime(5);
-
-        public Miss(Cache cache) {
-            this.cache = cache;
-        }
-
-        public void execute(City city){
-            if (cache.isFull()){
-                cache.removeLSU();
-            }
-            cache.write(city);
-            cache.workAsMuch(WORKTIME);
+            values.add(0,city);
         }
     }
 
