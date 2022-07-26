@@ -67,11 +67,12 @@ class SolutionTestWithBFS {
 //            System.out.println("current: "+node.row+","+node.col);
 
             if (bucket.isEmpty() && isAllRipe(box)){
-                for(int[] path:node.path){
-                    System.out.print(Arrays.toString(path)+"->");
-                }
+//                for(int[] path:node.path){
+//                    System.out.print(Arrays.toString(path)+"->");
+//                }
 
                 answer = node.path.size();
+                break;
             }
 
             for (int i = 0; i < 4; i++) {
